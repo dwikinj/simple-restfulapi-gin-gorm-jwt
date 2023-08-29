@@ -1,0 +1,19 @@
+###POST api/register
+POST http://localhost:8080/api/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "jaya",
+  "password": "dwiki123"
+}
+
+###POST api/login
+POST http://localhost:8080/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "jaya",
+  "password": "dwiki123"
+}
