@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"github.com/dwikinj/simple-restfulapi-gin-gorm-jwt/service"
 	"github.com/dwikinj/simple-restfulapi-gin-gorm-jwt/utils"
 	"gorm.io/gorm"
 	"html"
@@ -49,7 +50,7 @@ func LoginCheck(username string, password string) (string, error) {
 		return "", errors.New("username or password wrong")
 	}
 
-	tokenString, _ := utils.GenerateToken(&user)
+	tokenString, _ := service.GenerateToken(user.Username)
 	return tokenString, nil
 
 }

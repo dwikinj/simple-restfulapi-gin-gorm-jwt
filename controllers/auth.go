@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/dwikinj/simple-restfulapi-gin-gorm-jwt/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 type LoginInput struct {
@@ -20,11 +22,8 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	user := models.User{}
-	user.Username = input.Username
-	user.Password = input.Password
+	token, errLogin := models.LoginCheck(input.Username, input.Password)
 
-	token, errLogin := models.LoginCheck(user.Username, user.Password)
 	if errLogin != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -67,5 +66,21 @@ func CurrentUser(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": user})
+
+}
+
+func ExtractToken(ctx *gin.Context) string {
+	var token string
+
+	authorization := ctx.Request.Header.Get("Authorization")
+	authorizationField := strings.Fields(authorization)
+	fmt.Println(authorizationField)
+
+	if len(authorizationField) != 0 && authorizationField[0] == "Bearer" {
+		token = authorizationField[1]
+		return token
+	} else {
+		return ""
+	}
 
 }
